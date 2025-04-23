@@ -1,0 +1,123 @@
+[game]
+hostname = "SVO RP"
+maxplayers = 15
+soft_max_players = 10
+desc="""
+ZZZ
+"""
+map_pool="BackmenDefaultMapPool"
+defaultpreset="secret"
+lobbyenabled = true
+cryo_sleep_rejoining = true
+lobbyduration=300
+contraband_examine = false
+disease = false
+whitelist_role_enabled = false
+role_timers = false
+role_whitelist = false
+global_status_icons_enabled = false
+[infolinks]
+wiki="http://wiki.backmen.ru"
+github="https://github.com/Rxup/space-station-14"
+
+[shuttle]
+arrivals = true
+arrivals_map = "/Maps/Misc/kosmoport.yml"
+#arrivals_map = "/Maps/Backmen/Etc/terminal.yml"
+#arrivals_map = "/Maps/Misc/terminal.yml"
+arrivals_returns = true
+auto_call_time = 150
+auto_call_extension_time = 70
+emergency_dock_time = 280
+emergency_authorize_time = 30
+emergency_early_launch_allowed = true
+arrivals_planet = false
+
+[salvage]
+expedition_cooldown = 300
+
+[ic]
+restricted_names = true
+flavor_text = true
+
+[ooc]
+show_ooc_patron_color = false
+
+[looc]
+enabled_crit = true
+
+[biomass]
+easy_mode = false
+
+[atmos]
+space_wind = true
+space_wind_max_velocity = 22.0
+max_explosion_range = 5
+
+[physics]
+target_minimum_tickrate = 30
+timetosleep = 0.1
+angsleeptol = 0.01
+linsleeptol = 0.001
+
+[update]
+restart_delay = 120
+
+[worldgen]
+enabled = true
+
+[ahelp]
+admin_prefix = true
+admin_prefix_webhook = true
+
+[viewport]
+maximum_width = 21
+
+[rules]
+time = 10
+
+[afk]
+time = 9999999.0
+#time=1200.0
+
+[admin]
+announce_login = false
+announce_logout = false
+see_own_notes = true
+new_player_threshold = 1
+alert.min_players_sharing_connection = 2
+
+[events]
+enabled=true
+
+[server]
+rules_file="RulesBackmen"
+
+[net]
+max_connections = 1024
+log_late_msg=false
+# Automatic port forwarding!
+# Disabled by default because you may not want to do this.
+upnp = true
+sendbuffersize=2471071
+#receivebuffersize=1471071
+lidgren_log_warning = false
+lidgren_log_error = false
+
+[netres]
+limit = 2.0
+
+[queue]
+enabled=true
+
+[laying]
+crawlundertables = false
+auto_get_up = false
+
+[vote]
+map_enabled = true
+restart_required_ratio = 0.6
+timermap = 60
+
+[npc]
+max_updates = 4096
