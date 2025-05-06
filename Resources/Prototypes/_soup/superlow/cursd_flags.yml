@@ -1,0 +1,67 @@
+- type: entity
+  parent: BaseSign
+  id: FlagBaseSdvg
+  description: Дальше бога нет
+  abstract: true
+  components:
+  - type: WallMount
+    arc: 360
+  - type: Sprite
+    drawdepth: WallTops
+    sprite: _soup/sdvg_flags.rsi
+
+- type: entity
+  id: FlagSdvgAllah
+  parent: FlagBaseSdvg
+  name: jihad
+  components:
+  - type: Sprite
+    state: allah
+
+- type: entity
+  id: FlagSdvgHitler
+  parent: FlagBaseSdvg
+  name: hitler
+  components:
+  - type: Sprite
+    state: hitler
+
+- type: entity
+  id: FlagSdvgRussia
+  parent: FlagBaseSdvg
+  name: russia
+  components:
+  - type: Sprite
+    state: nash
+
+- type: entity
+  id: FlagSdvgNazi
+  parent: FlagBaseSdvg
+  name: nazi
+  components:
+  - type: Sprite
+    state: nazi
+
+- type: entity
+  id: FlagSdvgnigg
+  parent: FlagBaseSdvg
+  name: confederate
+  components:
+  - type: Sprite
+    state: nigg
+
+- type: entity
+  id: FlagSdvgGod
+  parent: FlagBaseSdvg
+  name: god
+  components:
+  - type: Sprite
+    state: otche_nash
+
+- type: entity
+  id: FlagSdvgStars
+  parent: FlagBaseSdvg
+  name: syria
+  components:
+  - type: Sprite
+    state: stars
