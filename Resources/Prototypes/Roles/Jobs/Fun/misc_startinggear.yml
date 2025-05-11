@@ -141,6 +141,13 @@
     - trayScanner
     - AccessConfiguratorUniversal
     - Multitool
+    - JawsOfLife
+    - PowerDrill
+    - WelderExperimental
+    - HolofanProjector
+    - MedicalPDA
+    - MedkitCombatFilled
+    - PenCentcom
 
 #Gladiator with spear
 - type: startingGear
