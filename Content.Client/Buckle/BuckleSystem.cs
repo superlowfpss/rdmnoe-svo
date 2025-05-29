@@ -3,6 +3,7 @@ using Content.Shared.Buckle;
 using Content.Shared.Buckle.Components;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Rotation;
+using Content.Shared.SVO.Vehicle.Components;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 
@@ -65,6 +66,11 @@ internal sealed class BuckleSystem : SharedBuckleSystem
             if (!TryComp<SpriteComponent>(buckledEntity, out var buckledSprite))
                 continue;
 
+            // SS220 Readd-Vehicles begin
+            if (HasComp<VehicleComponent>(uid))
+                continue;
+            // SS220 Readd-Vehicles end
+            
             if (isNorth)
             {
                 // This will only assign if empty, it won't get overwritten by new depth on multiple calls, which do happen easily

@@ -24,6 +24,8 @@ using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Content.Shared.SVO.Vehicle.Components;
+using Content.Shared.SVO.Buckle;
 
 namespace Content.Shared.Buckle;
 
@@ -64,6 +66,17 @@ public abstract partial class SharedBuckleSystem
     {
         Unbuckle(ent!, null);
     }
+
+    //SS220-Vehicle-doafter-fix begin
+    private void OnUnbuckleDoAfter(EntityUid uid, BuckleComponent component, UnbuckleDoAfterEvent args)
+    {
+        if (args.Handled || args.Cancelled)
+            return;
+
+        TryUnbuckle(uid, uid, component, false);
+        args.Handled = true;
+    }
+    //SS220-Vehicle-doafter-fix end
 
     #region Pulling
 
@@ -139,7 +152,7 @@ public abstract partial class SharedBuckleSystem
         }
 
         var delta = (xform.LocalPosition - strapComp.BuckleOffset).LengthSquared();
-        if (delta > 1e-5)
+        if (delta > 1e-5 && !HasComp<VehicleComponent>(strapUid)) // ss220 readd-vehicles
             Unbuckle(buckle, (strapUid, strapComp), null);
     }
 
@@ -159,6 +172,19 @@ public abstract partial class SharedBuckleSystem
 
     private void OnBuckleDownAttempt(EntityUid uid, BuckleComponent component, DownAttemptEvent args)
     {
+        // SS220 Readd-Vehicles begin
+        //Let entities stand back up while on vehicles so that they can be knocked down when slept/stunned
+        //This prevents an exploit that allowed people to become partially invulnerable to stuns
+        //while on vehicles
+
+        if (component.BuckledTo != null)
+        {
+            var buckle = component.BuckledTo;
+            if (TryComp<VehicleComponent>(buckle, out _))
+                return;
+        }
+        // SS220 Readd-Vehicles end
+
         if (component.Buckled)
             args.Cancel();
     }
@@ -175,11 +201,13 @@ public abstract partial class SharedBuckleSystem
             args.Cancel();
     }
 
-    private void OnBuckleUpdateCanMove(EntityUid uid, BuckleComponent component, UpdateCanMoveEvent args)
+private void OnBuckleUpdateCanMove(EntityUid uid, BuckleComponent component, UpdateCanMoveEvent args)
+{
+    if (component.Buckled && !HasComp<VehicleComponent>(component.BuckledTo))
     {
-        if (component.Buckled)
-            args.Cancel();
+        args.Cancel();
     }
+}
 
     public bool IsBuckled(EntityUid uid, BuckleComponent? component = null)
     {
@@ -421,6 +449,32 @@ public abstract partial class SharedBuckleSystem
 
         if (!CanUnbuckle(buckle, user, popup, out var strap))
             return false;
+
+        // SS220 Readd-Vehicles begin
+        if (user.HasValue && TryComp<VehicleComponent>(strap, out var vehicle) &&
+            vehicle.Rider != user && !_mobState.IsIncapacitated(buckle))
+        {
+            //SS220-Vehicle-doafter-fix begin
+            var unbuckleTime = buckle.Comp.VehicleUnbuckleTime;
+
+            if (vehicle.UnbuckleTime != null)
+                unbuckleTime = vehicle.UnbuckleTime.Value;
+            //So here if the one to unbuckle isn't one riding the vehicle,
+            //we are raising DoAfter event, so you need some time to
+            //unbuckle someone from a vehicle.
+            var doAfterEventArgs = new DoAfterArgs(EntityManager, user.Value, unbuckleTime, new UnbuckleDoAfterEvent(),
+                vehicle.Rider, target: vehicle.Rider)
+            {
+                BreakOnMove = true,
+                BreakOnDamage = true,
+                NeedHand = true
+            };
+
+            _doAfter.TryStartDoAfter(doAfterEventArgs);
+            //SS220-Vehicle-doafter-fix end
+            return false;
+        }
+        // SS220 Readd-Vehicles end
 
         Unbuckle(buckle!, strap, user);
         return true;

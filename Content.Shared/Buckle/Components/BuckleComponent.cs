@@ -40,6 +40,15 @@ public sealed partial class BuckleComponent : Component
     [DataField]
     public bool PullStrap;
 
+    //SS220-Vehicle-doafter-fix begin
+    /// <summary>
+    /// Time required for others to unbuckle us from a vehicle
+    /// </summary>
+    [DataField]
+    [ViewVariables(VVAccess.ReadWrite)]
+    public TimeSpan VehicleUnbuckleTime = TimeSpan.FromSeconds(.75f);
+    //SS220-Vehicle-doafter-fix end
+
     /// <summary>
     /// The amount of time that must pass for this entity to
     /// be able to unbuckle after recently buckling.
